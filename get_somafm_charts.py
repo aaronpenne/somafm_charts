@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+Simple scraper to pull the 'Top 30' charts from SomaFM (somafm.com) and reformat them
+for analysis.
+
+Author: Aaron Penne
+Created: 2018-03-07
+"""
+
 from lxml import html
 import requests
 from datetime import date, timedelta
@@ -44,38 +53,33 @@ station_url_names = ['bagel',
                      'xmasinfrisko',
                      'xmasrocks']
 
-# Get list of week start dates in two formats
-num_weeks = int(round(52*30))  # (Weeks in years)*(Years)
-chart_weeks = {'url': [],
-               'csv': []}
-#week = date(2017, 12, 30)  # (YYYY, MM, DD) 
+
 
 # Round today's date to the most recent Saturday (when charts are published)
 today = date.today()
 today_index = (today.weekday() + 1) % 7
 week = today - timedelta(today_index + 1)
 
-for i in range(num_weeks):
+# Get list of week start dates in two formats
+chart_weeks = {'url': [],
+               'csv': []}
+while week != date(2000, 1, 1):
     chart_weeks['url'] += [week.strftime('%d%b%y')]  # DDMMMYY (ex. 30Dec17)
     chart_weeks['csv'] += [week.isoformat()]         # YYYY-MM-DD
     week = week - timedelta(days=7)                  # Previous week
 
-# FIXME development code to shorten runs
-#station_url_names = ['groovesalad']
-#chart_weeks['url'] = chart_weeks['url'][0:3]
-#chart_weeks['csv'] = chart_weeks['csv'][0:3]
 
-data = {'week': [],
-        'rank': [],
-        'artist': [],
-        'media': [],
-        'media_type': [],
-        'score_type': [],
-        'score': [],
-        'station': [],
-        'url': []}
 
 for i, station in enumerate(station_url_names):
+    data = {'week': [],
+            'rank': [],
+            'artist': [],
+            'media': [],
+            'media_type': [],
+            'score_type': [],
+            'score': [],
+            'station': [],
+            'url': []}
     try:
         for j, week in enumerate(chart_weeks['url']):
             print('{} ({:02}/{:02}) | {} ({:04}/{:04})'.format(station, i+1, len(station_url_names), week, j+1, len(chart_weeks['url'])))
@@ -120,14 +124,14 @@ for i, station in enumerate(station_url_names):
                         data['score'] += [line[paren+1:-1]]
                         data['station'] += [station]
                         data['url'] += [page_url]
+                        
+    # When error occurs, print out this station's csv and start scraping the next station
     except:
+        # Create dataframe out of dict
+        df = pd.DataFrame(data, columns=data.keys())
+        df.index.name = 'index'
+        
+        # Create csv out of dataframe
+        df_out = df.astype(str)
+        df_out.to_csv(output_dir + 'somafm_charts_' + station + '.csv')
         continue
-        
-        
-# Create dataframe out of dict
-df = pd.DataFrame(data, columns=data.keys())
-df.index.name = 'index'
-
-# Create csv out of dataframe
-df_out = df.astype(str)
-df_out.to_csv(output_dir + 'somafm_charts.csv')
