@@ -1,20 +1,26 @@
 somafm_charts
 =============
 
-Parse and compile artist/album/track charts from the great somafm
+Parses and compiles artist/album/track charts from [`somafm`](http://somafm.com/), the best internet radio around. The end goal is to have a database of all the top artists/albums/tracks played on the various stations.
 
-<a href="http://somafm.com/"><img src="http://somafm.com/linktous/150x50sfm2_1.gif" alt="SomaFM commercial free internet radio" border=0 width=150 height=50 ></a>
+From the SomaFM website:
 
+> *over 30 unique channels of listener-supported, commercial-free, underground/alternative radio broadcasting to the world. All music hand-picked by SomaFM's award-winning DJs and music directors.*
 
 
 FIXME
 -----
-- [x] Pull data from all stations
-- [ ] Pull data from all dates (programmatic 7 day delta)
-- [ ] Parse chart into columns (csv style)
-- [ ] Output CSV
-- [ ] Generate metrics (top artist on groovesalad in 2015, top song on xmas ever)
-- [ ] Generate visualization
-- [ ] Generate year-end ranking charts, etc.
-- [ ] Create database architecture
-- [ ] Save data in database
+- Basics
+    - [x] Pull data from all stations
+    - [x] Pull data from all dates (programmatic 7 day delta)
+    - [x] Parse chart into columns (csv style)
+    - [x] Output CSV
+    - [ ] Args for date range, stations (other filtering after data pull)
+    - [ ] Start date to 'last Saturday' (relative to today)
+- Reporting
+    - [ ] Generate metrics (top artist on groovesalad in 2015, top song on xmas ever)
+    - [ ] Generate visualization
+    - [ ] Generate year-end ranking charts, etc.
+- Databasing
+    - [ ] Create database architecture
+    - [ ] Save data in database
