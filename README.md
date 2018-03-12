@@ -1,22 +1,49 @@
-somafm_charts
-=============
+SomaFM "Top 30" Charts
+======================
 
-Parses and compiles artist/album/track charts from [`somafm`](http://somafm.com/), the best internet radio around. The end goal is to have a database of all the top artists/albums/tracks played on the various stations.
+This simple scraper parses and compiles the "Top 30" charts at [`SomaFM`](http://somafm.com/).  SomaFM is "listener-supported, commercial-free, underground/alternative radio" based out of San Francisco. Their 30+ uniquely flavored channels are hand curated and cover everything from [downtempo beats](https://somafm.com/player/#/now-playing/groovesalad) to [indie pop rock](https://somafm.com/player/#/now-playing/indiepop) to [metal](https://somafm.com/player/#/now-playing/metal) to [classic soul](https://somafm.com/player/#/now-playing/7soul). 
 
-From the SomaFM website:
+Background
+----------
+Every week SomaFM publishes charts for each channel with the 30 most popular artists, albums, and tracks for the previous week. Each channel has a new page for the week's chart. This tool scrapes the following charts:
+- Top 30 Artists by Spins
+- Top 30 Albums by Spins
+- Top 30 Tracks by Spins
+- Top 30 Artists by Listeners
+- Top 30 Albums by Listeners
+- Top 30 Tracks by Listeners
 
-> *over 30 unique channels of listener-supported, commercial-free, underground/alternative radio broadcasting to the world. All music hand-picked by SomaFM's award-winning DJs and music directors.*
+Definitions from the SomaFM website: 
+> *Charts are listed by spin (the number of times we played the song that week) and by listeners, which is the sum of the number of people listening to a channel each time we played that song or artist.*
 
+get_somafm_charts.py
+--------------------
+This tool goes through each channel's entire available chart history and *currently* creates a CSV for each channel. The end goal is to push this info to a database.
 
-FIXME
------
+The chart data is reshaped so each record contains the following fields:
+`week`, `rank`, `artist`, `media`, `media_type`, `score_type`, `score`, `station`, `url`
+
+To get the full "Top 30" dataset the code has to run through roughly 10 years of weekly pages for each of the 35 channels. It takes a couple hours on my machine to finish.
+
+Dependencies
+------------
+- [Python 3](https://www.python.org/)
+- [lxml](https://github.com/lxml/lxml)
+- [pandas](https://github.com/pandas-dev/pandas)
+- [requests](https://github.com/requests/requests)
+
+Developed with Python 3.6 on Windows 10. 
+
+Todo List
+---------
 - Basics
     - [x] Pull data from all stations
     - [x] Pull data from all dates (programmatic 7 day delta)
     - [x] Parse chart into columns (csv style)
     - [x] Output CSV
     - [ ] Args for date range, stations (other filtering after data pull)
-    - [ ] Start date to 'last Saturday' (relative to today)
+    - [x] Start date to 'last Saturday' (relative to today)
+    - [ ] Modularize for CLI usage
 - Reporting
     - [ ] Generate metrics (top artist on groovesalad in 2015, top song on xmas ever)
     - [ ] Generate visualization
@@ -24,3 +51,9 @@ FIXME
 - Databasing
     - [ ] Create database architecture
     - [ ] Save data in database
+        
+License
+-------
+[MIT License](https://github.com/aaronpenne/somafm_charts/blob/master/LICENSE) © Aaron Penne
+
+Disclaimer: This project is not affiliated with SomaFM in any way.
