@@ -1,7 +1,7 @@
 SomaFM "Top 30" Charts
 ======================
 
-This simple scraper parses and compiles the "Top 30" charts at <a href="http://somafm.com/"><img src="http://somafm.com/linktous/150x50sfm2_1.gif" alt="SomaFM" border=0 width=75 height=25 ></a>.  SomaFM is "listener-supported, commercial-free, underground/alternative radio" based out of San Francisco. Their 30+ uniquely flavored channels are hand curated and cover everything from [downtempo beats](https://somafm.com/player/#/now-playing/groovesalad) to [indie pop rock](https://somafm.com/player/#/now-playing/indiepop) to [metal](https://somafm.com/player/#/now-playing/metal) to [classic soul](https://somafm.com/player/#/now-playing/7soul). 
+This simple scraper parses and compiles the "Top 30" charts at [SomaFM](http://somafm.com/).  SomaFM is "listener-supported, commercial-free, underground/alternative radio" based out of San Francisco. Their 30+ uniquely flavored channels are hand curated and cover everything from [downtempo beats](https://somafm.com/player/#/now-playing/groovesalad) to [indie pop rock](https://somafm.com/player/#/now-playing/indiepop) to [metal](https://somafm.com/player/#/now-playing/metal) to [classic soul](https://somafm.com/player/#/now-playing/7soul). 
 
 Background
 ----------
