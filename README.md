@@ -44,6 +44,7 @@ Todo List
     - [ ] Args for date range, stations (other filtering after data pull)
     - [x] Start date to 'last Saturday' (relative to today)
     - [ ] Modularize for CLI usage
+    - [x] Multithreading!
 - Reporting
     - [ ] Generate metrics (top artist on groovesalad in 2015, top song on xmas ever)
     - [ ] Generate visualization
