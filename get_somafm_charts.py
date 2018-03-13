@@ -11,13 +11,24 @@ Developed with:
     Windows 10
 """
 
+import os
+
 from lxml import html
 import requests
-from datetime import date, timedelta
+
+from datetime import datetime, date, timedelta
 import pandas as pd
-import os
+
 from multiprocessing.dummy import Pool
 import itertools
+
+# Profiling
+t_start = datetime.now()
+
+# Multithreading parameters
+threads = 20  # I/O based task so threads>#CPUs is okay
+# threads = 20   # Run time: 0:09:57
+# threads = 100  # Run time: 0:05:10 but heavy CPU usage
 
 # Set output directory, make it if needed
 output_dir = os.path.realpath(r'C:\tmp\somafm')  # Windows machine
@@ -25,41 +36,41 @@ if not os.path.isdir(output_dir):
     os.mkdir(output_dir)
 
 # List of all channel names formatted as in chart urls
-channel_url_names = ['bagel',
-                     'beatblender',
-                     'bootliquor',
-                     'brfm',
-                     'christmas',
-                     'cliqhop',
-                     'covers',
-                     'deepspaceone',
-                     'defcon',
-                     'digitalis',
-                     'doomed',
-                     'dronezone',
-                     'dubstep',
-                     'earwaves',
-                     'fluid',
-                     'folkfwd',
-                     'groovesalad',
-                     'illstreet',
-                     'indiepop',
-                     'jollysoul',
-                     'lush',
-                     'metal',
-                     'missioncontrol',
-                     'poptron',
-                     'secretagent',
-                     'seventies',
-                     'sf1033',
-                     'sonicuniverse',
-                     'spacestation',
-                     'suburbsofgoa',
-                     'thetrip',
-                     'thistle',
-                     'u80s',
-                     'xmasinfrisko',
-                     'xmasrocks']
+channel_names = ['bagel',
+                 'beatblender',
+                 'bootliquor',
+                 'brfm',
+                 'christmas',
+                 'cliqhop',
+                 'covers',
+                 'deepspaceone',
+                 'defcon',
+                 'digitalis',
+                 'doomed',
+                 'dronezone',
+                 'dubstep',
+                 'earwaves',
+                 'fluid',
+                 'folkfwd',
+                 'groovesalad',
+                 'illstreet',
+                 'indiepop',
+                 'jollysoul',
+                 'lush',
+                 'metal',
+                 'missioncontrol',
+                 'poptron',
+                 'secretagent',
+                 'seventies',
+                 'sf1033',
+                 'sonicuniverse',
+                 'spacestation',
+                 'suburbsofgoa',
+                 'thetrip',
+                 'thistle',
+                 'u80s',
+                 'xmasinfrisko',
+                 'xmasrocks']
 
 def last_saturday():
     """Round today's date to the most recent Saturday (when charts are published)"""
@@ -74,6 +85,7 @@ def get_chart_weeks(week):
     
     chart_weeks = {'url': [],
                    'csv': []}
+    # Set beginning of time to 01 Jan 2000 since SomaFM started in 2000. Published charts do not go back that far.
     while week != date(2000, 1, 1):
         chart_weeks['url'] += [week.strftime('%d%b%y')]  # DDMMMYY (ex. 30Dec17)
         chart_weeks['csv'] += [week.isoformat()]         # YYYY-MM-DD
@@ -106,10 +118,10 @@ def get_channel_charts(args):
         page = requests.get(page_url)
         tree = html.fromstring(page.content)
         text = tree.xpath('//div[@id="content"]/pre/text()')
-        a = str(text[0])
-        b = a.splitlines()
-        c = list(filter(None, b))
-        for line in c:
+        text = str(text[0])
+        text_split = text.splitlines()
+        text_split = list(filter(None, text_split))
+        for line in text_split:
             
             # If end of charts, go to next week
             if 'adds' in line.lower():
@@ -161,7 +173,6 @@ def get_channel_charts(args):
     df = pd.DataFrame(data, columns=data.keys())
     df.index.name = 'index'
     return df
-
     
 def main():
     pass  # Local variables aren't showing up in Variable Explorer in Spyder, skip for now
@@ -171,9 +182,9 @@ if __name__ == '__main__':
     chart_weeks = get_chart_weeks(week)
 
     # For each channel, grab weekly charts, aggregate, and create csv
-    for channel in channel_url_names:
+    for channel in channel_names:
         print(channel)
-        with Pool(10) as p:
+        with Pool(threads) as p:
             # Run a chunk of weeks in a particular chart in parallel
             data = p.map(get_channel_charts, zip(itertools.repeat(channel), chart_weeks['url'], chart_weeks['csv']))
             
@@ -183,3 +194,6 @@ if __name__ == '__main__':
         # Create csv out of dataframe
         df_out = df.astype(str)
         df_out.to_csv(os.path.join(output_dir, 'somafm_charts_' + channel + '.csv'))
+        
+    t_end = datetime.now()
+    print('Run time: {}'.format(t_end - t_start))
