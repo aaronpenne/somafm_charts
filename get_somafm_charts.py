@@ -121,6 +121,7 @@ def get_channel_charts(args):
                 media_type = line_split[2].lower()
                 score_type = line_split[4].lower()
                 
+            # If not known header, is this line a chart record?
             else:
                 # Look in line for period and parenthesis, indicitave of chart record
                 dot = [ix for ix in range(len(line)) if line[ix:ix+2]=='. ']  # This method is used over regex for speed #FIXME check speed

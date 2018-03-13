@@ -23,7 +23,7 @@ This tool goes through each channel's entire available chart history and *curren
 The chart data is reshaped so each record contains the following fields:
 `week`, `rank`, `artist`, `media`, `media_type`, `score_type`, `score`, `station`, `url`
 
-To get the full "Top 30" dataset the code has to run through roughly 10 years of weekly pages for each of the 35 channels. It takes a couple hours on my machine to finish.
+To get the full "Top 30" dataset the code has to run through roughly 10 years of weekly pages for each of the 35 channels. Multithreading helps speed things up, but it takes ~15 minutes on my machine.
 
 Dependencies
 ------------
