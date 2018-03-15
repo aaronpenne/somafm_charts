@@ -27,6 +27,7 @@ t_start = datetime.now()
 
 # Multithreading parameters
 threads = 20  # I/O based task so threads>#CPUs is okay
+# threads = 10   # Run time: 0:19:45
 # threads = 20   # Run time: 0:09:57
 # threads = 100  # Run time: 0:05:10 but heavy CPU usage
 

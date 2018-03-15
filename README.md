@@ -55,6 +55,6 @@ Todo List
         
 License
 -------
-[MIT License](https://github.com/aaronpenne/somafm_charts/blob/master/LICENSE) © Aaron Penne
+[MIT License](https://github.com/aaronpenne/somafm_charts/blob/master/LICENSE.md) © Aaron Penne
 
 Disclaimer: This project is not affiliated with SomaFM in any way.
