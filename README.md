@@ -16,6 +16,8 @@ Every week SomaFM publishes charts for each channel with the 30 most popular art
 Definitions from the SomaFM website: 
 > *Charts are listed by spin (the number of times we played the song that week) and by listeners, which is the sum of the number of people listening to a channel each time we played that song or artist.*
 
+Per SomaFM, these charts are not an accurate representation of song populatity. Caveat emptor.
+
 get_somafm_charts.py
 --------------------
 This tool goes through each channel's entire available chart history and *currently* creates a CSV for each channel. The end goal is to push this info to a database.
